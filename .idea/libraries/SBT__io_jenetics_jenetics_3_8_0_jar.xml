@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="SBT: io.jenetics:jenetics:3.8.0:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/io.jenetics/jenetics/jars/jenetics-3.8.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/io.jenetics/jenetics/srcs/jenetics-3.8.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
