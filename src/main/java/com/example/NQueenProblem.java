@@ -14,31 +14,27 @@ import static org.jenetics.engine.EvolutionResult.toBestPhenotype;
 import static org.jenetics.engine.limit.byFitnessThreshold;
 
 public class NQueenProblem {
-    //La representacion es un array de tamaño numberOfQueens en el , por que un array y no una matriz? Por que
-    //sabemos que para que sea una solucion valida no puede haber mas de una reina en la misma fila.
-    //Esta decision va a reducir la memoria y tiempo utilizado para obtener la solucion
+    // The board is represented by an array of intergers. This integer represents the column where one queen
+    // is placed in the row i where i is the index in the array.
+    // I choose this representation because if we analyze the problem we can not have more than one queen in the same
+    // row. We can also say the same for columns.
 
-
-    //Si el cromosoma = {3,6,8,5,1,4,0,7,9,2}, el primeri numero define la columna en donde se posiciona la reina en la primera fila,
-    // , el segundo numero define la columna de la reina en la segunda fila y asi con los demas
-
-
-    private int numberOfQueens;
+    private int boardSize;
     private int populationSize;
-    private static int defualtNumberOfQueens = 8;
+    private static int defaultNumberOfQueens = 8;
     private static int defaultPopulationSize = 100;
 
-    NQueenProblem(int numberOfQueens, int populationSize) {
-        this.numberOfQueens = numberOfQueens;
+    NQueenProblem(int boardSize, int populationSize) {
+        this.boardSize = boardSize;
         this.populationSize = populationSize;
     }
 
-    NQueenProblem(int numberOfQueens) {
-        this(numberOfQueens, defaultPopulationSize);
+    NQueenProblem(int boardSize) {
+        this(boardSize, defaultPopulationSize);
     }
 
     NQueenProblem() {
-        this(defualtNumberOfQueens, defaultPopulationSize);
+        this(defaultNumberOfQueens, defaultPopulationSize);
     }
 
     /**
@@ -80,7 +76,7 @@ public class NQueenProblem {
         final Engine<EnumGene<Integer>, Long> engine = Engine
                 .builder(
                         NQueenProblem::countDiagonal,
-                        codecs.ofPermutation(numberOfQueens))
+                        codecs.ofPermutation(boardSize))
                 .optimize(Optimize.MINIMUM)
                 .survivorsSelector(new TournamentSelector<>(5))
                 .offspringSelector(new LinearRankSelector<>())
@@ -97,6 +93,14 @@ public class NQueenProblem {
                 .limit(byFitnessThreshold(1L))
                 .limit(limit.byExecutionTime(Duration.ofMinutes(30)))
                 .collect(toBestPhenotype());
+
+        long numberOfIterations = engine
+                .stream()
+                .limit(byFitnessThreshold(1L))
+                .limit(limit.byExecutionTime(Duration.ofMinutes(30)))
+                .count();
+
+        System.out.println("Number of iterations: " + numberOfIterations);
 
         System.out.println("Executors Shutdown");
 
